@@ -1,0 +1,17 @@
+from machine import Pin, I2C
+import time
+import sgp30
+
+# Inisialisasi I2C (default: GPIO21 = SDA, GPIO22 = SCL)
+i2c = I2C(0, scl=Pin(22), sda=Pin(21), freq=100000)
+
+# Inisialisasi sensor
+sgp = sgp30.SGP30(i2c)
+sgp.init_air_quality()
+
+print("Mulai membaca data SGP30...")
+
+while True:
+    time.sleep(1)
+    co2eq, tvoc = sgp.measure_air_quality()
+    print("eCO2: {} ppm, TVOC: {} ppb".format(co2eq, tvoc))
